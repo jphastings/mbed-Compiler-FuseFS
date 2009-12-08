@@ -27,15 +27,12 @@ class MbedFS
   end
 
   def size(path)
-    puts "size:"
-    p File.dirname(path)[1..-1]
-    p File.basename(path)
     @mbed.file_contents(File.dirname(path)[1..-1],File.basename(path)).length
   end
 end
 
-FuseFS.set_root( MbedFS.new("notauser","notapassword") )
+FuseFS.set_root( MbedFS.new(ARGV.shift,ARGV.shift) )
 
 # Mount under a directory given on the command line.
-FuseFS.mount_under 'mount/'
+FuseFS.mount_under ARGV.shift
 FuseFS.run
